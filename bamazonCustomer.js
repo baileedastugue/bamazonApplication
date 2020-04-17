@@ -44,6 +44,22 @@ function addStockProducts() {
         })
 }
 
+function checkQuantity () {
+    var check = "select product_name, stock_quantity, price from products where ?"
+    var query = connection.query(check, 
+        {
+            product_name: chosenProduct
+        }, function (err, res) {
+            if (err) throw err;
+            if (res[0].stock_quantity >= chosenAmount) {
+                console.log("enough to buy");
+            }
+            else {
+                console.log("insufficient quantity");
+            }
+    })
+}
+
 function displayAllProducts () {
     var display = "select * from products";
     var query = connection.query(
@@ -72,6 +88,7 @@ function displayItemName () {
     })
 }
 var chosenProduct = "";
+var chosenAmount;
 var inquirer = require("inquirer");
 function customerPrompt() {
     inquirer
@@ -95,6 +112,7 @@ function customerPrompt() {
     ])
     .then(function(answer) {
         chosenProduct = answer.productName;
-        console.log(answer.productQuantity);
+        chosenAmount = answer.productQuantity;
+        checkQuantity();
     })
 };
