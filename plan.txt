@@ -1,0 +1,102 @@
+- create SQL database
+- table = products 
+    - item_id (unique id for each product) 
+        // int
+        // auto-increment
+        // not null
+    - product_name (Name of product)
+        // varchar
+        // not null
+    - department_name
+        // varchar
+    - price (cost to customer)
+        // decimal (10, 2)
+        // not null
+    - stock_quantity (how much of the product is available in stores)
+        // int
+    - product_sales decimal(20, 2)
+        // not null
+        // price*stock_quantity
+- 10 different items stocked
+    // array of items
+    // use a for loop to add those items
+    // items:
+        1. 
+        2.
+        3.
+        4.
+        5.
+        6.
+        7.
+        8.
+        9.
+        10.
+- create bamazonCustomer.js 
+    // on first run will display all products (incl id, name, price)
+    // two prompts:
+        // inquirer
+        1. name of product you'd like to buy
+            // list
+        2. quantity you'd like to buy
+    // checkQuantity() {
+        determine whether the store has enough product to meet the customer's request
+        if (there is enough) {
+            continue with order
+            - decrease the database by that amount
+            - show the total cost to the customer
+        }
+        else {
+            console.log("insufficient quantity)
+        }
+    }
+- create bamazonManager.js
+    // when the application is run, prompt (inquirer) this list 
+        // View Products for Sale
+        // View Low Inventory
+        // Add to Inventory
+        // Add New Product
+    // if (view products for sale) {
+        list every available item: 
+            // the item IDs
+            // names
+            // prices
+            // quantities.
+    }
+    // if (view low inventory) {
+        if (inventory count < 5) {
+            console.log(product name + product name + has low inventory - please restock)
+        }
+    }
+    // if (add to inventory) {
+        prompt manager to add a certain amount
+        update that amount in the database
+        return the amount now in stock
+    }  
+    // if (add new product) {
+        prompt manager to add a completely new product
+            // a series of 5 prompts?
+    }
+
+- create new table called departments
+    // columns:
+        // department_id integer(5) not null auto-increment 
+        // department_name varchar 
+        // over_head_costs integer (10) not null
+            // A dummy number you set for each department
+- create a new file called bamazonSupervisor.js
+    // join the two tables together
+    // when the program runs, prompt:
+        // View Product Sales by Department
+        // Create New Department
+    // if (View Product Sales by Department) {
+        console.log(a table with these columns)
+            // department_id
+            // department_name
+            // over_head_costs
+            // product_sales
+            // total_profit
+                // calculated on the fly
+                // product_sales - over_head_costs
+                // use a custom alias
+
+    }
