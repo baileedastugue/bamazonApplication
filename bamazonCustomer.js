@@ -43,7 +43,7 @@ function addStockProducts() {
             console.log(res.affectedRows + " row inserted!\n");
         })
 }
-
+var newAmount;
 function checkQuantity () {
     var check = "select product_name, stock_quantity, price from products where ?"
     var query = connection.query(check, 
@@ -51,12 +51,30 @@ function checkQuantity () {
             product_name: chosenProduct
         }, function (err, res) {
             if (err) throw err;
-            if (res[0].stock_quantity >= chosenAmount) {
-                console.log("enough to buy");
+            if (parseFloat(res[0].stock_quantity) >= chosenAmount) {
+                newAmount = parseFloat(res[0].stock_quantity) - chosenAmount;
+                console.log(res[0].stock_quantity);
+                console.log(chosenAmount);
+                console.log(newAmount);
+                updateAmount();
             }
             else {
                 console.log("insufficient quantity");
             }
+    })
+}
+var totalPrice = 0;
+function updateAmount () {
+    var query = connection.query("update products set ? where ?", 
+    [{
+        stock_quantity: newAmount
+    },
+    {
+        product_name: chosenProduct
+    }], function (err, res) {
+        if (err) throw err;
+        displayUpdatedAmount();
+        findPrice();
     })
 }
 
@@ -116,3 +134,25 @@ function customerPrompt() {
         checkQuantity();
     })
 };
+
+function displayUpdatedAmount() {
+    var query = connection.query("select ? from products",
+        {
+            product_name: chosenProduct
+        },
+    function(err, res) {
+        if (err) throw err;
+        console.log("Product name: " + chosenProduct + " || Number left in stock: " + newAmount);
+    })
+}
+
+function findPrice() {
+    var query = connection.query("select price from products where ?", 
+    {
+        product_name: chosenProduct
+    }, function (err, res) {
+        if (err) throw err;
+        totalPrice = parseFloat(res[0].price) * parseInt(chosenAmount);
+        console.log("Product pulled from back! Total cost: $" + totalPrice);
+    })
+}
