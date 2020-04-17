@@ -14,8 +14,10 @@ var connection = mysql.createConnection({
 connection.connect(function(err){
     if (err) throw err;
     console.log("hey");
+    displayItemName();
     // addStockProducts();
-    displayProducts();
+    // displayAllProducts();
+   
 })
 
 var insert = "insert into products (product_name, department_name, price, stock_quantity, product_sales) values ?";
@@ -33,7 +35,6 @@ for (var i = 0; i < stockProducts.length; i++)
         stockProducts[i].push(stockProducts[i][2]*stockProducts[i][3]);
     }
 
-
 function addStockProducts() {
     var query = connection.query(
         insert, [stockProducts], 
@@ -43,7 +44,7 @@ function addStockProducts() {
         })
 }
 
-function displayProducts () {
+function displayAllProducts () {
     var display = "select * from products";
     var query = connection.query(
         display, function (err, res) {
@@ -60,3 +61,40 @@ function displayProducts () {
         }
     )
 }
+var allProductNames = [];
+function displayItemName () {
+    var query = connection.query("select product_name from products", function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            allProductNames.push(res[i].product_name);
+        }
+        customerPrompt();
+    })
+}
+var chosenProduct = "";
+var inquirer = require("inquirer");
+function customerPrompt() {
+    inquirer
+    .prompt([
+        
+        {
+            name: "productName",
+            type: "list",
+            choices: allProductNames
+        },
+        {
+            name: "productQuantity",
+            type: "input",
+            validate: function(value) {
+                if (!isNaN(value)) {
+                    return true;
+                }
+                return false;
+            }
+        }
+    ])
+    .then(function(answer) {
+        chosenProduct = answer.productName;
+        console.log(answer.productQuantity);
+    })
+};
