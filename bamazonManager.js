@@ -1,5 +1,10 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
+var chosenProduct;
+var chosenNewAmount;
+var allProductNames = [];
+var currentStockAmount;
+var totalNewAmount;
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -34,7 +39,8 @@ function managerPrompt () {
                 lowInventory();
                 break;
             case "Add to Inventory":
-                console.log("add to i");
+                createItemDirectory();
+                // addToInventory();
                 break;
             case "Add New Product":
                 console.log("add product");
@@ -47,12 +53,84 @@ function lowInventory () {
     var inventorySelection = "select * from products where stock_quantity <5";
     var query = connection.query (inventorySelection, function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++) {
-            console.log(res[i].product_name + " has low inventory - please restock");
+        if (res.length > 0) {
+            for (var i = 0; i < res.length; i++) {
+                console.log(res[i].product_name + " has low inventory - please restock");
+            }
+        }    
+        else {
+            console.log("All products are fully stocked");
         }
+        
     })
 }
 
+function addToInventory() {
+    inquirer.prompt([
+        {
+            name: "product",
+            type: "list",
+            choices: allProductNames
+        },
+        {
+            name: "amount",
+            type: "input",
+            default: 0
+        }
+    ]).then(function(response){
+        chosenProduct = response.product;
+        chosenNewAmount = response.amount;
+        getCurrentAmount();
+    })
+
+}
+
+function createItemDirectory () {
+    var query = connection.query("select product_name from products", function(err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            allProductNames.push(res[i].product_name);
+        }
+        addToInventory();
+    })
+}
+
+function updateAmount () {
+    var query = connection.query("update products set ? where ?", 
+    [{
+        stock_quantity: totalNewAmount
+    },
+    {
+        product_name: chosenProduct
+    }], function (err, res) {
+        if (err) throw err;
+        displayUpdatedAmount();
+    })
+}
+
+function getCurrentAmount() {
+    var query = connection.query("select * from products where ?",
+        {
+            product_name: chosenProduct
+        },
+    function(err, res) {
+        if (err) throw err;
+        currentStockAmount = res[0].stock_quantity;
+        totalNewAmount = currentStockAmount + parseInt(chosenNewAmount);
+        updateAmount();
+    })
+}
+
+function displayUpdatedAmount() {
+    var query = connection.query("select ? from products",
+        {
+            product_name: chosenProduct
+        },
+    function(err, res) {
+        if (err) throw err;
+        console.log("Product name: " + chosenProduct + " | Number left in stock: " + totalNewAmount);
+    })
+}
 
 function displayAllProducts () {
     var display = "select * from products";
