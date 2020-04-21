@@ -1,5 +1,6 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
+
 var chosenProduct;
 var chosenNewAmount;
 var allProductNames = [];
@@ -10,9 +11,11 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    
     database: "bamazon" 
 });
+
+var departments = ["clothing", "baby", "grocery", "health, beauty, & fitness", "home & patio furniture", "electronics & office", "pharmacy", "household & cleaning"]
 
 connection.connect(function(err){
     if (err) throw err;
@@ -40,10 +43,9 @@ function managerPrompt () {
                 break;
             case "Add to Inventory":
                 createItemDirectory();
-                // addToInventory();
                 break;
             case "Add New Product":
-                console.log("add product");
+                newProduct();
                 break;
         }
     })
@@ -148,4 +150,41 @@ function displayAllProducts () {
             }
         }
     )
+}
+
+function newProduct () {
+    inquirer
+    .prompt([
+        {
+            name: "product",
+            type: "input"
+        },
+        {
+            name: "department",
+            type: "list",
+            choices: departments
+        },
+        {
+            name: "price",
+            type: "input",
+            validate: function (value){
+                if (!isNaN(value)) {
+                    return true;
+                }
+                return false;
+            }
+        },
+        {
+            name: "quantity",
+            type: "input",
+            validate: function (value){
+                if (!isNaN(value) && (value % 1 === 0)) {
+                    return true;
+                }
+                return false;
+            }
+        }
+    ]).then(function(response) {
+        console.log(response.product, response.department, response.price, response.quantity);
+    })
 }

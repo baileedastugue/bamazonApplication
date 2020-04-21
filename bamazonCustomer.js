@@ -6,11 +6,11 @@ var mysql = require("mysql");
 var insert = "insert into products (product_name, department_name, price, stock_quantity, product_sales) values ?";
 var stockProducts = [
     ["apple", "grocery", 1.4, 15],
-    ["barbells", "fitness", 25, 8],
-    ["sticky notes", "home", 5, 10],
-    ["stapler", "home", 13.49, 26],
-    ["airpods", "technology", 150, 20],
-    ["coffee", "grocert", 11.99, 30],
+    ["barbells", "health, beauty, & fitness", 25, 8],
+    ["sticky notes", "electronics & office", 5, 10],
+    ["stapler", "electronics & office", 13.49, 26],
+    ["airpods", "electronics & office", 150, 20],
+    ["coffee", "grocery", 11.99, 30],
     ["toothpaste", "pharmacy", 6.35, 30]
 ]
 for (var i = 0; i < stockProducts.length; i++) 
@@ -28,7 +28,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    
     database: "bamazon" 
 });
 
