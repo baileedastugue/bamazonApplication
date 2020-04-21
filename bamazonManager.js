@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    
+
     database: "bamazon" 
 });
 
@@ -185,6 +185,12 @@ function newProduct () {
             }
         }
     ]).then(function(response) {
-        console.log(response.product, response.department, response.price, response.quantity);
+        var insert = "insert into products (product_name, department_name, price, stock_quantity, product_sales) values ?";
+        var newItem = [[response.product, response.department, parseFloat(response.price), parseInt(response.quantity), parseFloat(response.price*response.quantity)]];
+        var query = connection.query(
+            insert, [newItem], 
+             function (err, res) {
+                if (err) throw err;
+            })
     })
 }
