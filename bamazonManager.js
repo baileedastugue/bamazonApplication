@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    
+    password: "",
     database: "bamazon" 
 });
 
@@ -31,7 +31,7 @@ function managerPrompt () {
                 displayAllProducts();
                 break;
             case "View Low Inventory":
-                console.log("View Low I");
+                lowInventory();
                 break;
             case "Add to Inventory":
                 console.log("add to i");
@@ -42,6 +42,17 @@ function managerPrompt () {
         }
     })
 }
+
+function lowInventory () {
+    var inventorySelection = "select * from products where stock_quantity <5";
+    var query = connection.query (inventorySelection, function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            console.log(res[i].product_name + " has low inventory - please restock");
+        }
+    })
+}
+
 
 function displayAllProducts () {
     var display = "select * from products";
