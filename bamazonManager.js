@@ -11,16 +11,27 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-
+    password: "",
     database: "bamazon" 
 });
 
-var departments = ["clothing", "baby", "grocery", "health, beauty, & fitness", "home & patio furniture", "electronics & office", "pharmacy", "household & cleaning"]
+var departments = [];
 
 connection.connect(function(err){
     if (err) throw err;
-    managerPrompt();
+    allDepartments();
 })
+
+function allDepartments() {
+    var query = connection.query("SELECT department_name from departments", function (err, res){
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++ ){
+            departments.push(res[i].department_name);
+        }
+        managerPrompt();
+
+    })
+}
 
 function managerPrompt () {
     inquirer
@@ -192,5 +203,6 @@ function newProduct () {
              function (err, res) {
                 if (err) throw err;
             })
+        console.log(response.product + " added to inventory!");
     })
 }
