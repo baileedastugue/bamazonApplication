@@ -1,18 +1,26 @@
 {
-  "name": "bamazon",
+  "name": "bamazonapplication",
   "version": "1.0.0",
-  "description": "",
+  "description": "A very clever play on an unknown online retailer using node.js and mySQL",
   "main": "bamazonCustomer.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "cli-table": "^0.3.1",
     "console.table": "^0.10.0",
     "inquirer": "^7.1.0",
     "mysql": "^2.18.1"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baileedastugue/bamazonApplication.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baileedastugue/bamazonApplication/issues"
+  },
+  "homepage": "https://github.com/baileedastugue/bamazonApplication#readme"
 }

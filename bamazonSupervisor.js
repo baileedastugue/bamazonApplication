@@ -17,8 +17,8 @@ connection.connect(function(err){
 })
 
 var table = new Table({
-    head: ["department_id", "department_name", "overhead_costs", "product_sales", "total_profit"],
-    colWidths: [15, 28, 16, 15, 14]
+    head: ["department_id", "department_name", "product_sales", "overhead_costs", "total_profit"],
+    colWidths: [15, 28, 15, 16, 14]
 });
 
 function totalSales () {
