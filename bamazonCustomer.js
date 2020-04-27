@@ -1,7 +1,6 @@
-// require("dotenv").config();
+require("dotenv").config();
 var mysql = require("mysql");
-// var password = require("./pw.js");
-// console.log(password.mySQLpw);
+// var SQLpassword = process.env.password;
 
 var allProductNames = [];
 var chosenProduct = "";
