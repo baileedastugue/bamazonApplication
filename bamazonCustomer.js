@@ -1,6 +1,5 @@
 require("dotenv").config();
 var mysql = require("mysql");
-// var SQLpassword = process.env.password;
 
 var allProductNames = [];
 var chosenProduct = "";
@@ -13,7 +12,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: process.env.PASSWORD,
     database: "bamazon" 
 });
 
